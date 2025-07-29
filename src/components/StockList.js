@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStocks from './useStocks';
+import UseStocks from './UseStocks';
 import axiosInstance from '../api/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,7 +10,7 @@ const StockList = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
-  const { stocks, count, loading, error, refetch } = useStocks(page);
+  const { stocks, count, loading, error, refetch } = UseStocks(page);
   const [editStock, setEditStock] = useState(null);
   const [formData, setFormData] = useState({
     symbol: '',

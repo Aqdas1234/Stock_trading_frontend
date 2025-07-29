@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axiosInstance from '../api/AxiosInstance';
 
-const useStocks = (page = 1) => {
+const UseStocks = (page = 1) => {
   const [stocks, setStocks] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -27,4 +27,4 @@ const useStocks = (page = 1) => {
   return { stocks, count, loading, error, refetch: fetchStocks };
 };
 
-export default useStocks;
+export default UseStocks;
