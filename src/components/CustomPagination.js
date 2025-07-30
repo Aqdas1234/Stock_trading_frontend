@@ -2,7 +2,7 @@ import { Pagination } from 'react-bootstrap';
 
 const CustomPagination = ({ page, totalPages, setPage }) => {
   return (
-    <Pagination className="justify-content-center mt-4">
+    <Pagination className="justify-content-center">
       <Pagination.Prev
         onClick={() => setPage((p) => Math.max(1, p - 1))}
         disabled={page === 1}

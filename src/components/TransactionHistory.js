@@ -1,18 +1,23 @@
-// TransactionHistory.js
+
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../api/AxiosInstance'; 
 import {  Table, Spinner } from 'react-bootstrap';
 import '../assets/style.css';
+import CustomPagination from './CustomPagination';
 
 const TransactionHistory = () => {
+  const [page,setPage] =useState(1)
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [count,setCount] = useState(0)
 
   useEffect(() => {
     const fetchTransactions = async () => {
+      setLoading(true)
       try {
-        const res = await axiosInstance.get('/transactions/'); 
+        const res = await axiosInstance.get(`/transactions/?page=${page}`); 
         setTransactions(res.data.results);
+        setCount(res.data.count);
       } catch (error) {
         console.error("Error fetching transactions:", error);
       } finally {
@@ -21,11 +26,13 @@ const TransactionHistory = () => {
     };
 
     fetchTransactions();
-  }, []);
+  }, [page]);
 
   if (loading) {
     return <Spinner animation="border" variant="primary" />;
   }
+
+  const totalPages = Math.ceil(count / 15);
 
   return (
     <div className="container mt-4">
@@ -51,9 +58,10 @@ const TransactionHistory = () => {
                 <td>{new Date(txn.timestamp).toLocaleString()}</td>
               </tr>
             ))}
-          </tbody>
+          </tbody> 
         </Table>
-     
+         <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
+
     </div>
   );
 };

@@ -2,16 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../api/AxiosInstance'; 
 import TransactionHistory from './TransactionHistory';
+import CustomPagination from './CustomPagination';
 
 const Holdings = () => {
   const [holdings, setHoldings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page,setPage] = useState(1);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchHoldings = async () => {
       try {
         const response = await axiosInstance.get('/holdings/'); 
         setHoldings(response.data.results);
+        setCount(response.data.count)
       } catch (error) {
         console.error('Error fetching holdings:', error);
       } finally {
@@ -20,7 +24,8 @@ const Holdings = () => {
     };
 
     fetchHoldings();
-  }, []);
+  }, [page]);
+  const totalPages = Math.ceil(count / 15);
 
   return (
     <>
@@ -56,6 +61,7 @@ const Holdings = () => {
         </table>
       )}
     </div>
+             <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
     
     <TransactionHistory/>
 

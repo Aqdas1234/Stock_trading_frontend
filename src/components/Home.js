@@ -14,6 +14,8 @@ const Home = () => {
   const [filter, setFilter] = useState('day');
   const [showModal, setShowModal] = useState(false);
   const [actionType, setActionType] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   const handleDetails = (stock) => setSelectedStock(stock);
   const handleBuySell = (type) => {
@@ -61,128 +63,145 @@ const Home = () => {
 
         {/* Stocks Section */}
         <section id="stocks">
-          <h2 className="mt-5 mb-5 fw-bold" style={{color:'#003366', fontSize:'2.5rem'}}>Available Stocks</h2>
-
+         <div className="d-flex justify-content-between align-items-center mt-5 mb-4 flex-wrap gap-3">
+          <h2 className="fw-bold m-0" style={{ color: '#003366', fontSize: '2.5rem' }}>
+            Available Stocks
+          </h2>
           {loading && <p>Loading...</p>}
           {error && <p className="text-danger">Error: {error.message}</p>}
+
+          <input
+            type="text"
+            className="form-control w-50"
+            placeholder="Search stocks by name or symbol..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
 
           {selectedStock ? (
               <>
   
-  <Row className="align-items-start">
-    <Col md={4}>
-      <Card
-        onClick={() => handleDetails(selectedStock)}
-        style={{
-          background: '#b7d8faff',
-          cursor: 'pointer',
-          border: 'none',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          overflow: 'hidden',
-          height: '250px',
-          marginTop: '100px',
-        }}
-      >
-        <div
-          style={{
-            height: '80%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <img
-            src={selectedStock.icon}
-            alt={selectedStock.name}
+      <Row className="align-items-start">
+        <Col md={4}>
+          <Card
+            onClick={() => handleDetails(selectedStock)}
             style={{
-              maxHeight: '100%',
-              maxWidth: '100%',
-              objectFit: 'contain',
-            }}
-          />
-        </div>
-        <div style={{ height: '20%', textAlign: 'center', padding: '5px 10px' }}>
-          <div className="text-muted fw-bold">{selectedStock.name}</div>
-          <div className="text-success fw-bold">Price: ${selectedStock.current_price}</div>
-        </div>
-      </Card>
-
-      {/* Buttons below card */}
-      <div className="mt-3 d-flex gap-2">
-        <Button variant="success" onClick={() => handleBuySell("BUY")}>Buy</Button>
-        <Button variant="danger" onClick={() => handleBuySell("SELL")}>Sell</Button>
-        <Button variant="secondary" onClick={() => setSelectedStock(null)}>Back</Button>
-      </div>
-    </Col>
-
-    <Col md={8}>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>
-          {selectedStock.name} ({selectedStock.symbol.toUpperCase()}) - Price History
-        </h4>
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="form-select w-auto"
-        >
-          <option value="hour">Last Hour</option>
-          <option value="day">Today</option>
-          <option value="month">This Month</option>
-        </select>
-      </div>
-      <StockChart stock={selectedStock} filter={filter} />
-    </Col>
-  </Row>
-
-  {/* Other stock cards below */}
-  <h3 className="mt-5 mb-3" style={{ color: '#003366' }}>Explore More Stocks</h3>
-  <Row className="g-4">
-    {stocks.filter(stock => stock.id !== selectedStock.id).map(stock => (
-      <Col key={stock.id} md={3}>
-        <Card
-          onClick={() => handleDetails(stock)}
-          style={{
-            background: '#b7d8faff',
-            cursor: 'pointer',
-            border: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            overflow: 'hidden',
-            height: '250px',
-          }}
-        >
-          <div
-            style={{
-              height: '80%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              background: '#b7d8faff',
+              cursor: 'pointer',
+              border: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              overflow: 'hidden',
+              height: '250px',
+              marginTop: '100px',
             }}
           >
-            <img
-              src={stock.icon}
-              alt={stock.name}
+            <div
               style={{
-                maxHeight: '100%',
-                maxWidth: '100%',
-                objectFit: 'contain',
+                height: '80%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <img
+                src={selectedStock.icon}
+                alt={selectedStock.name}
+                style={{
+                  maxHeight: '100%',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                }}
+              />
+            </div>
+            <div style={{ height: '20%', textAlign: 'center', padding: '5px 10px' }}>
+              <div className="text-muted fw-bold">{selectedStock.name}</div>
+              <div className="text-success fw-bold">Price: ${selectedStock.current_price}</div>
+            </div>
+          </Card>
+
+          {/* Buttons below card */}
+          <div className="mt-3 d-flex gap-2">
+            <Button variant="success" onClick={() => handleBuySell("BUY")}>Buy</Button>
+            <Button variant="danger" onClick={() => handleBuySell("SELL")}>Sell</Button>
+            <Button variant="secondary" onClick={() => setSelectedStock(null)}>Back</Button>
           </div>
-          <div style={{ height: '20%', textAlign: 'center', padding: '5px 10px' }}>
-            <div className="text-muted fw-bold">{stock.name}</div>
-            <div className="text-success fw-bold">Price: ${stock.current_price}</div>
+        </Col>
+
+        <Col md={8}>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h4>
+              {selectedStock.name} ({selectedStock.symbol.toUpperCase()}) - Price History
+            </h4>
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="form-select w-auto"
+            >
+              <option value="hour">Last Hour</option>
+              <option value="day">Today</option>
+              <option value="month">This Month</option>
+            </select>
           </div>
-        </Card>
-      </Col>
-    ))}
-  </Row>
-  <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
-</>
+          <StockChart stock={selectedStock} filter={filter} />
+        </Col>
+      </Row>
+
+      {/* Other stock cards below */}
+      <h3 className="mt-5 mb-3" style={{ color: '#003366' }}>Explore More Stocks</h3>
+      <Row className="g-4">
+        {stocks.filter(stock => stock.id !== selectedStock.id).map(stock => (
+          <Col key={stock.id} md={4}>
+            <Card
+              onClick={() => handleDetails(stock)}
+              style={{
+                background: '#b7d8faff',
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                overflow: 'hidden',
+                height: '250px',
+              }}
+            >
+              <div
+                style={{
+                  height: '80%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img
+                  src={stock.icon}
+                  alt={stock.name}
+                  style={{
+                    maxHeight: '100%',
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+              <div style={{ height: '20%', textAlign: 'center', padding: '5px 10px' }}>
+                <div className="text-muted fw-bold">{stock.name}</div>
+                <div className="text-success fw-bold">Price: ${stock.current_price}</div>
+              </div>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+      <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
+    </>
 
           ) : (
             <>
               <Row className="g-4">
-                {stocks.map((stock, index) => (
+                {stocks
+                  .filter(stock =>
+                    stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((stock, index)  => (
                   <Col 
                     key={stock.id} 
                     md={4} 

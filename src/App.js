@@ -16,19 +16,24 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    if (!token) {
+      setLoading(false);  
+      return;
+    }
 
-    // Don't call /user/me/ if token doesn't exist
-    if (!token) return;
-
-
-    // If token exists and valid, make API call
     axiosInstance.get('/user/me/')
       .then((res) => setUser(res.data))
-      .catch(() => setUser(null));
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));  
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
 
   return (

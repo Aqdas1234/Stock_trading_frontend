@@ -49,7 +49,7 @@ const Profile = () => {
 
         <hr />
 
-        <h5  style={{ color: '#003366' }}>Account Info</h5>
+        <h3  style={{ color: '#003366' }}>Account Info</h3>
         {account ? (
           <>
             <p><strong>Current Balance:</strong> ${account.balance}</p>
