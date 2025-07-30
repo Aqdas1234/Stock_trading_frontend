@@ -28,7 +28,7 @@ const AddStock = () => {
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value.trim(),
+        [name]: value,
       }));
     }
   };

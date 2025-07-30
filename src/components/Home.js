@@ -74,6 +74,7 @@ const Home = () => {
             type="text"
             className="form-control w-50"
             placeholder="Search stocks by name or symbol..."
+            style={{ border: '4px solid #007bff', borderRadius: '20px' }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -190,6 +191,7 @@ const Home = () => {
           </Col>
         ))}
       </Row>
+      <br />
       <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
     </>
 
@@ -237,6 +239,7 @@ const Home = () => {
                   </Col>
                 ))}
               </Row>
+              <br />
                 <CustomPagination page={page} totalPages={totalPages} setPage={setPage} />
             </>
           )}
